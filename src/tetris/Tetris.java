@@ -73,7 +73,7 @@ public class Tetris extends JFrame {
         Board board = new Board(this);
         add(board);
         
-        // method to start the board
+        // HERE WE START THE GAME!!!!
         board.start();
 
         // fill the board

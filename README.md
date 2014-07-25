@@ -3,7 +3,7 @@ Tetris Awesome
 
 A Tetris Game in Java.
 
-![example](./docs/example.png)
+![screen](example.png)
 
 
 This game is composed of three classes:
@@ -12,11 +12,7 @@ This game is composed of three classes:
 Tetris.java
 -----------
 
-This class extends from JFrame and this is where the main is.
-
-This class creates the board layout.
-
-It has a method to control the status bar.
+This is the main class. It extends from JFrame to create the board layout. It also has a method to control the status bar.
 
 The Game is started calling the method start() from the class Board.java.
 
