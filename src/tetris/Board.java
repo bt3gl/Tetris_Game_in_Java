@@ -41,8 +41,8 @@ public class Board extends JPanel implements ActionListener {
    
     // Set the size of the pieces in relation to the board
 	// smaller values = bigger pieces
-    final int boardWid = 15;
-    final int boardHei = 25;
+    final int boardWid = 10;
+    final int boardHei = 18;
 
     // Counts the number of lines removed for points
     int numLinesRemoved = 0;
@@ -165,6 +165,7 @@ public class Board extends JPanel implements ActionListener {
 	                 break;
                      case 'Q': // fallthrough
 	             case 'q':
+                         System.out.println("Score: " + numLinesRemoved);
 	            	 System.exit(0);
                          break;
              }
