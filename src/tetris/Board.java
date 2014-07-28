@@ -152,8 +152,11 @@ public class Board extends JPanel implements ActionListener {
 	            	 tryToMove(currentPiece, posX + 1, posY);
 	                 break;
 	             case KeyEvent.VK_DOWN:
-	            	 tryToMove(currentPiece.rotate(), posX, posY);
+	            	 tryToMove(currentPiece.rotate(true), posX, posY);
 	                 break;
+                     case KeyEvent.VK_UP:
+                         tryToMove(currentPiece.rotate(false), posX, posY);
+                         break;
 	             case KeyEvent.VK_SPACE:
 	            	 dropPieceDown();
 	                 break;

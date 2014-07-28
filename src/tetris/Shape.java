@@ -355,11 +355,15 @@ public class Shape {
      *                       |
      *                       2   
      *                       
-     *    We would invert the PARITY!!!!                                                                        
+     *    We would invert the PARITY!!!!
+     * 
+     *  To reverse in the opposite direction, the tranformation is
+     *  (x, y) -> (y, -x).
      */
 
-    
-    public Shape rotate() 
+    // TODO: I'm not sure if it makes sense to have reverse be a
+    // boolean.
+    public Shape rotate(boolean reverse) 
     {
     	// square pieces don't rotate
         if (this.pieceShape == Pieces.SquareShape){
@@ -372,8 +376,13 @@ public class Shape {
 
         // set new coordinates to this new piece
         for (int idx = 0; idx < 4; ++idx) {
-            result.setX(idx, -this.getY(idx));
-            result.setY(idx, this.getX(idx)); 
+            if (reverse) {
+                result.setX(idx, this.getY(idx));
+                result.setY(idx, -this.getX(idx));
+            } else {
+                result.setX(idx, -this.getY(idx));
+                result.setY(idx, this.getX(idx)); 
+            }
         }
         
         return result;
