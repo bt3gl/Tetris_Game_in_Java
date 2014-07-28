@@ -140,8 +140,8 @@ public class Shape {
          */
         this.coordsTable = new int[][][] {
                 { { 0, 0 },   { 0, 0 },   { 0, 0 },   { 0, 0 } }, // no shape
-                { { -1, 1 },  { 0, 1 },   { 0, 0 },   { 0, 1 } }, // z
-                { { 0, -1 },  { 0, 0 },   { 1, 0 },   { 1, 1 } }, // s
+                { { -1, 0 },  { 0, 0 },   { 0, 1 },   { 1, 1 } }, // z
+                { { -1, 1 },  { 0, 1 },   { 0, 0 },   { 1, 0 } }, // s
                 { { 0, -2 },  { 0, -1 },  { 0, 0 },   { 0, 1 } }, // line
                 { { -1, 0 },  { 0, 0 },   { 1, 0 },   { 0, -1 } }, // T
                 { { 0, 0 },   { 1, 0 },   { 0, 1 },   { 1, 1 } }, // square
@@ -238,6 +238,7 @@ public class Shape {
         Pieces[] valueHere = Pieces.values(); 
         //System.out.println(valueHere); // whats Ltetris.Shape$Pieces?
         setShape(valueHere[num]);
+        
     }
 
     
