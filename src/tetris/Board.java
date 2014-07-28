@@ -8,7 +8,6 @@
  * 
  * TO DO:
  * 	-> customize to decide size board and game's speed
- *  -> fix exit to q 
  *  -> ask to play again after game over
  *  -> understand java's graphics class better
  * 
@@ -160,11 +159,14 @@ public class Board extends JPanel implements ActionListener {
 	             case KeyEvent.VK_SPACE:
 	            	 dropPieceDown();
 	                 break;
+                     case 'F': // fallthrough
 	             case 'f':
 	            	 moveDownOneLine();
 	                 break;
+                     case 'Q': // fallthrough
 	             case 'q':
-	            	 System.exit(0);// doesnt work
+	            	 System.exit(0);
+                         break;
              }
 
          }
