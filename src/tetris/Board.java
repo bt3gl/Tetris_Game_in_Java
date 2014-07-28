@@ -118,6 +118,8 @@ public class Board extends JPanel implements ActionListener {
     	
          public void keyPressed(KeyEvent key) {
 
+
+             //System.out.println(currentPiece.getShape());
         	 // dealing with exceptions
              if (!isStarted) {  
                  return;
@@ -245,7 +247,7 @@ public class Board extends JPanel implements ActionListener {
 	    // starts in the bottom and decreases
 	    for (int i = this.boardHei - 1; i >= 0; --i) {
 	    	
-	    	System.out.println(i);
+	    	//System.out.println(i);
 	        boolean lineIsFull = true;
 	
 	        // starts in the left and increases  
@@ -419,7 +421,7 @@ public class Board extends JPanel implements ActionListener {
 		super.paint(g);
 	
 	    Dimension size = getSize();
-	    System.out.println(size);
+	    //System.out.println(size);
 	    
 	    
 	    int boardTop = (int) size.getHeight() - this.boardHei * squareHeight();
