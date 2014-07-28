@@ -8,7 +8,6 @@
  * 
  * TO DO:
  * 	-> customize to decide size board and game's speed
- *  -> fix exit to q 
  *  -> ask to play again after game over
  *  -> understand java's graphics class better
  * 
@@ -42,11 +41,14 @@ public class Board extends JPanel implements ActionListener {
    
     // Set the size of the pieces in relation to the board
 	// smaller values = bigger pieces
-    final int boardWid = 15;
-    final int boardHei = 25;
+    final int boardWid = 10;
+    final int boardHei = 18;
 
-    // Counts the number of lines removed for points
+    // Counts the number of lines removed
     int numLinesRemoved = 0;
+    // Counts the number of points
+    int points = 0;
+    int level = 0;
     
     // Determines the actual position of the 
     // falling tetris shape
@@ -73,7 +75,8 @@ public class Board extends JPanel implements ActionListener {
     JLabel statusbar;
     JLabel picture;
     
-    Shape currentPiece  = new Shape();
+    Shape currentPiece   = new Shape();
+    Shape previewPiece   = new Shape();
     Shape.Pieces[] board = new Shape.Pieces[boardWid * boardHei];
     
 
@@ -119,6 +122,8 @@ public class Board extends JPanel implements ActionListener {
     	
          public void keyPressed(KeyEvent key) {
 
+
+             //System.out.println(currentPiece.getShape());
         	 // dealing with exceptions
              if (!isStarted) {  
                  return;
@@ -152,16 +157,23 @@ public class Board extends JPanel implements ActionListener {
 	            	 tryToMove(currentPiece, posX + 1, posY);
 	                 break;
 	             case KeyEvent.VK_DOWN:
-	            	 tryToMove(currentPiece.rotate(), posX, posY);
+	            	 tryToMove(currentPiece.rotate(true), posX, posY);
 	                 break;
+                     case KeyEvent.VK_UP:
+                         tryToMove(currentPiece.rotate(false), posX, posY);
+                         break;
 	             case KeyEvent.VK_SPACE:
 	            	 dropPieceDown();
 	                 break;
+                     case 'F': // fallthrough
 	             case 'f':
 	            	 moveDownOneLine();
 	                 break;
+                     case 'Q': // fallthrough
 	             case 'q':
-	            	 System.exit(0);// doesnt work
+                         System.out.println("Score: " + points);
+	            	 System.exit(0);
+                         break;
              }
 
          }
@@ -195,6 +207,8 @@ public class Board extends JPanel implements ActionListener {
         isStarted = true;
         isFallingDone = false;
         numLinesRemoved = 0;
+        points = 0;
+        level = 0;
         clearBoard();
         newPiece();
         timer.start();
@@ -210,7 +224,7 @@ public class Board extends JPanel implements ActionListener {
     private void restart()
     {
          timer.start();
-         statusbar.setText(String.valueOf(numLinesRemoved));
+         statusbar.setText(String.valueOf(points));
          isPaused = false;
      }
 
@@ -239,7 +253,7 @@ public class Board extends JPanel implements ActionListener {
 	    // starts in the bottom and decreases
 	    for (int i = this.boardHei - 1; i >= 0; --i) {
 	    	
-	    	System.out.println(i);
+	    	//System.out.println(i);
 	        boolean lineIsFull = true;
 	
 	        // starts in the left and increases  
@@ -265,10 +279,27 @@ public class Board extends JPanel implements ActionListener {
 	    
 	    // increase points if we had removed lines
 	    if (countFullLines > 0) {
+                // Score formula from: http://harddrop.com/wiki/Scoring
+                int multiplier = 0;
+                switch (countFullLines) {
+                    case 1:
+                        multiplier = 40;
+                        break;
+                    case 2:
+                        multiplier = 100;
+                        break;
+                    case 3:
+                        multiplier = 300;
+                        break;
+                    case 4:
+                        multiplier = 1200;
+                        break;
+                }
+                this.points += multiplier * (level + 1);
 	        this.numLinesRemoved += countFullLines;
 	        
 	        // The points are giving by the number of lines and the width of the board
-	        this.statusbar.setText(String.valueOf(this.numLinesRemoved*this.boardWid));
+	        this.statusbar.setText(String.valueOf(this.points));
 	        // time to release a new piece
 	        this.isFallingDone = true;
 	    }
@@ -311,9 +342,15 @@ public class Board extends JPanel implements ActionListener {
 	 */
 	private void newPiece()
 	{
-		// get a random new piece
-		this.currentPiece.setRandomShape();
-		// set it to start in the initial position
+            if (this.currentPiece.getShape() == Shape.Pieces.NoShape ||
+                this.previewPiece.getShape() == Shape.Pieces.NoShape) {
+                // get a random new piece
+                this.currentPiece.setRandomShape();
+                this.previewPiece.setRandomShape();
+            } else {
+                Shape.setRandomShape(currentPiece, previewPiece);
+            }
+            // set it to start in the initial position
 	    this.posX = this.boardWid / 2 + 1;
 	    this.posY = this.boardHei - 1 + this.currentPiece.minY();
 	
@@ -413,7 +450,7 @@ public class Board extends JPanel implements ActionListener {
 		super.paint(g);
 	
 	    Dimension size = getSize();
-	    System.out.println(size);
+	    //System.out.println(size);
 	    
 	    
 	    int boardTop = (int) size.getHeight() - this.boardHei * squareHeight();
