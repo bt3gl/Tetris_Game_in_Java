@@ -27,16 +27,20 @@ public class Shape {
 	 * for a variable to be a set of predefined constants. 
 	 * 
 	 * Unlike in C, enum is a full class
+         *
+         * In a specific ordering in order to get the same
+         * distribution for random numbers as the Game Boy game. See
+         * setRandomShape(Shape,Shape) for details.
 	 * 
 	 */
-    enum Pieces { 		NoShape, 
-    					ZShape, 
-    					SShape, 
-    					LineShape, 
-    					TShape, 
-    					SquareShape, 
-    					LShape, 
-    					MirrorLShape };
+    enum Pieces { 		NoShape,
+                                LShape,
+                                MirrorLShape,
+                                LineShape,
+                                SquareShape,
+                                ZShape, 
+                                SShape, 
+                                TShape };
 
     private Pieces pieceShape;
     private int coords[][];
@@ -239,6 +243,51 @@ public class Shape {
         //System.out.println(valueHere); // whats Ltetris.Shape$Pieces?
         setShape(valueHere[num]);
         
+    }
+    
+    /*
+     *  Uses the randomizer algorithm from the Tetris Game Boy game
+     *  to pick the next piece. Modifies both of its arguments.
+     *
+     *  The randomizer takes the current shape and the preview shape,
+     *  and picks it if the bitwise OR of the current shape, the
+     *  preview shape, and the pick do not equal current shape. If
+     *  this OR'd result is equal to the current num, pick a new
+     *  number and try again. If the OR'd result is equal again, 
+     *  pick a random number and simply take that.
+     *
+     *  When a shape is "picked", "curr" is set to "preview" and
+     *  "preview" is set to the picked shape.
+     *
+     *  http://harddrop.com/wiki/Tetris_(Game_Boy)#Randomizer
+     * 
+     *  "curr" is the locking piece from the algorithm.
+     *
+     *  TODO: This is kind of confusing because
+     *  setRandomShape(Shape, Shape) is a static function, where
+     *  setRandomShape() is a member function. We should probably
+     *  get these to follow a consistant API.
+     */
+    public static void setRandomShape(Shape curr, Shape preview)
+    {
+        Random ran = new Random();
+        // To stay true to the Game Boy randomizer, we offset all of
+        // our int values by -1, and then add one before we set the
+        // shapes at the end.
+        int currNum = curr.getShape().ordinal() - 1;
+        int previewNum = preview.getShape().ordinal() - 1;
+        int pick = 0;
+        for (int i = 0; i < 2; i++) {
+            pick = Math.abs(ran.nextInt()) % 7;
+            if (currNum != (currNum | previewNum | pick)) {
+                break;
+            }
+        }
+        Pieces[] valueHere = Pieces.values();
+        // Offset the indexes by +1 to compensate for our -1 offset
+        // above.
+        curr.setShape(valueHere[previewNum+1]);
+        preview.setShape(valueHere[pick+1]);
     }
 
     

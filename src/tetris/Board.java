@@ -72,7 +72,8 @@ public class Board extends JPanel implements ActionListener {
     JLabel statusbar;
     JLabel picture;
     
-    Shape currentPiece  = new Shape();
+    Shape currentPiece   = new Shape();
+    Shape previewPiece   = new Shape();
     Shape.Pieces[] board = new Shape.Pieces[boardWid * boardHei];
     
 
@@ -319,9 +320,15 @@ public class Board extends JPanel implements ActionListener {
 	 */
 	private void newPiece()
 	{
-		// get a random new piece
-		this.currentPiece.setRandomShape();
-		// set it to start in the initial position
+            if (this.currentPiece.getShape() == Shape.Pieces.NoShape ||
+                this.previewPiece.getShape() == Shape.Pieces.NoShape) {
+                // get a random new piece
+                this.currentPiece.setRandomShape();
+                this.previewPiece.setRandomShape();
+            } else {
+                Shape.setRandomShape(currentPiece, previewPiece);
+            }
+            // set it to start in the initial position
 	    this.posX = this.boardWid / 2 + 1;
 	    this.posY = this.boardHei - 1 + this.currentPiece.minY();
 	
