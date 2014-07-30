@@ -25,14 +25,9 @@
 package tetris;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Graphics;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import tetris.Tetris.STATE;
 
 
 /* 
@@ -62,26 +57,29 @@ public class Tetris extends JFrame {
     JLabel instructbar;
 
     
- // Create states for menu
-    public static enum STATE{
-      MENU,
-      GAME,
-      AI
-    };
-
-    // create state with the modifier STATE to check which
-    // state we are in
-    private Menu menu ;
 
     public Tetris() {
-    	
+
+    	// starts with 0 points
+        statusbar = new JLabel(" 0");
+        add(statusbar, BorderLayout.NORTH);
+        
+        // instructions
+        instructbar = new JLabel("s:stop, f:faster, "
+        		+ "space:drop, down:rotate, q:quit");
+        add(instructbar, BorderLayout.SOUTH);
+
+        // constructor for our class board
+        Board board = new Board(this);
+        add(board);
+        
+        // HERE WE START THE GAME!!!!
+        board.start();
+
+        // fill the board
         setSize(xBoard, yBoard);
         setTitle(titleBoard);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);  
-        setState( STATE.MENU);
-       
-        
-        
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     
@@ -107,40 +105,5 @@ public class Tetris extends JFrame {
         // Shows or hides this component.
         game.setVisible(true);
 
-   }
-
-
-public void setState(STATE game) {
-	Container c = getContentPane();
-	//c.removeAll();
-    if(game == STATE.MENU){
-    	Menu menu = new Menu(this);
-        c.add(menu);
-    }
-	
-	if(game == STATE.GAME){
-        
-    	// starts with 0 points
-        statusbar = new JLabel("   0");
-        statusbar.setFont (statusbar.getFont ().deriveFont (30.0f));
-        c.add(statusbar, BorderLayout.NORTH);
-        
-        // instructions
-        instructbar = new JLabel("s:stop, f:faster, "
-        		+ "space:drop, down:rotate, q:quit");
-        instructbar.setFont (instructbar.getFont ().deriveFont (10.0f));
-        c.add(instructbar, BorderLayout.SOUTH);
-        
-        // constructor for our class board
-        Board board = new Board(this);
-        c.add(board);
-        
-        // HERE WE START THE GAME!!!!
-        board.start();
-	}
-    if(game == STATE.AI){
-    	// ADD L
-    }
-	
-} 
+   } 
 }
