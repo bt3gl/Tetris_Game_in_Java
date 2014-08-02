@@ -266,7 +266,7 @@ public class Shape {
      *  TODO: This is kind of confusing because
      *  setRandomShape(Shape, Shape) is a static function, where
      *  setRandomShape() is a member function. We should probably
-     *  get these to follow a consistant API.
+     *  get these to follow a consistent API.
      */
     public static void setRandomShape(Shape curr, Shape preview)
     {
@@ -296,6 +296,9 @@ public class Shape {
      * Without this, the piece would go beyond the wall and
      * would not stop at the bottom
      */
+
+    // TODO: this method is never called.
+    // He is lonely and wasting resources.
     public int minX()
     {
       int lim = this.coords[0][0]; // [0] is all the x coordinates
@@ -321,11 +324,11 @@ public class Shape {
      * 
      *  Suggestion from Samer:
      *  Every time you move the piece, you are actually creating
-     *  a new pice in the new coordinates
+     *  a new piece in the new coordinates
      *  
      *  Rotating is the same as inverting all X to be Y and vice versa
      *  
-     *  For example, if we hava a L:
+     *  For example, if we have a L:
      *    L: { { 0, 1 }, { 0, 0 },  { 0, -1 },   { 1, -1 } }
      *                       2
      *                       |
@@ -407,7 +410,7 @@ public class Shape {
      *                       
      *    We would invert the PARITY!!!!
      * 
-     *  To reverse in the opposite direction, the tranformation is
+     *  To reverse in the opposite direction, the transformation is
      *  (x, y) -> (y, -x).
      */
 
